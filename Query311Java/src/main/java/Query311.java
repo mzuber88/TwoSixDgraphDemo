@@ -1,4 +1,7 @@
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonElement;
 import com.google.protobuf.ByteString;
 import io.dgraph.DgraphClient;
 import io.dgraph.DgraphGrpc;
@@ -11,9 +14,6 @@ import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.Metadata;
 import io.grpc.stub.MetadataUtils;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
 
 public class Query311 {
   private static final String TEST_HOSTNAME = "localhost";
@@ -34,59 +34,34 @@ public class Query311 {
     return new DgraphClient(stub);
   }
 
+  private static void prettyPrintQueryResponse(Response res)
+  {
+    Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    JsonParser jp = new JsonParser();
+    JsonElement je = jp.parse(res.getJson().toStringUtf8());
+    String prettyAnswer = gson.toJson(je);
+    System.out.println(prettyAnswer);
+  }
+
   public static void main(final String[] args) {
     DgraphClient dgraphClient = createDgraphClient(false);
+    String query;
+    Response res;
 
-    // Initialize
-    dgraphClient.alter(Operation.newBuilder().setDropAll(true).build());
+    query = "{me(func: has(agency)) @filter(ge(closed_date, \"2018\")) {descriptor borough latitude longitude}}";
+    System.out.println("Query nodes that have agency property and closed date > 2018, return predicates descriptor, borough, latitude, and longitude");
+    System.out.println("Raw Query:" + query);
+    System.out.println("Response:");
+    res = dgraphClient.newTransaction().query(query);
+    prettyPrintQueryResponse(res);
+    System.out.println("");
 
-    // Set schema
-    String schema = "name: string @index(exact) .";
-    Operation operation = Operation.newBuilder().setSchema(schema).build();
-    dgraphClient.alter(operation);
-
-    Gson gson = new Gson(); // For JSON encode/decode
-    Transaction txn = dgraphClient.newTransaction();
-    try {
-      // Create data
-      Person p = new Person();
-      p.name = "Alice";
-
-      // Serialize it
-      String json = gson.toJson(p);
-
-      // Run mutation
-      Mutation mutation =
-          Mutation.newBuilder().setSetJson(ByteString.copyFromUtf8(json.toString())).build();
-      txn.mutate(mutation);
-      txn.commit();
-
-    } finally {
-      txn.discard();
-    }
-    // Query
-    String query =
-        "query all($a: string){\n" + "all(func: eq(name, $a)) {\n" + "    name\n" + "  }\n" + "}";
-    Map<String, String> vars = Collections.singletonMap("$a", "Alice");
-    Response res = dgraphClient.newTransaction().queryWithVars(query, vars);
-
-    // Deserialize
-    People ppl = gson.fromJson(res.getJson().toStringUtf8(), People.class);
-
-    // Print results
-    System.out.printf("people found: %d\n", ppl.all.size());
-    ppl.all.forEach(person -> System.out.println(person.name));
+    query = "{me(func: has(borough)) @filter(ge(longitude, -74) AND ge(latitude, 40.9) ) {descriptor borough latitude longitude}}";
+    System.out.println("Query nodes that have borough property and are located at a longitude > -74 and latitude > 40.9, return predicates descriptor, borough, latitude, and longitude");
+    System.out.println("Raw Query:" + query);
+    System.out.println("Response:");
+    res = dgraphClient.newTransaction().query(query);
+    prettyPrintQueryResponse(res);
   }
 
-  static class Person {
-    String name;
-
-    Person() {}
-  }
-
-  static class People {
-    List<Person> all;
-
-    People() {}
-  }
 }
