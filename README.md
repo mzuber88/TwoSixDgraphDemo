@@ -51,7 +51,7 @@ The script does the following:
 
 The resulting .json file can be imported into dgraph using curl.
 
->     data_conversion_scripts/insert_json_311_data_dgraph.sh 311_Service_Requests.csv.json
+>     data_conversion_scripts/insert_json_311_data_dgraph.sh data/311_Service_Requests.csv.json
 
 
 ### Working with the provided json data ###
@@ -69,7 +69,7 @@ The script does the following:
 
 The resulting .json file can be imported into dgraph using curl.
 
->     data_conversion_scripts/insert_json_311_data_dgraph.sh ./data/fhrw-4uyv_dgraph.json
+>     data_conversion_scripts/insert_json_311_data_dgraph.sh data/fhrw-4uyv_dgraph.json
 
 Updating the dgraph schema
 ------------
@@ -123,10 +123,10 @@ Putting It All Together
 >     ./data_conversion_scripts/shutdown_and_restart_dgraph.sh
 
 4.  Convert the included [fhrw-4uyv.json](data/fhrw-4uyv.json) into the format expected by dgraph.
->     ./data_conversion_scripts/convert_311_json_to_dgraph_json.sh ./data/fhrw-4uyv.json
+>     ./data_conversion_scripts/convert_311_json_to_dgraph_json.sh data/fhrw-4uyv.json
 
 5.   Inject the converted json into dgraph.
->     ./data_conversion_scripts/insert_json_311_data_dgraph.sh ./data/fhrw-4uyv_dgraph.json
+>     ./data_conversion_scripts/insert_json_311_data_dgraph.sh data/fhrw-4uyv_dgraph.json
 
 6.   Update the dgraph schema with some types and indicies so we can query.
 >     ./data_conversion_scripts/alter_schema_json.sh
