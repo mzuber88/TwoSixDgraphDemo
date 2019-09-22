@@ -69,7 +69,7 @@ The script does the following:
 
 The resulting .json file can be imported into dgraph using curl.
 
->     data_conversion_scripts/insert_json_311_data_dgraph.sh fhrw-4uyv_dgraph.json
+>     data_conversion_scripts/insert_json_311_data_dgraph.sh ./data/fhrw-4uyv_dgraph.json
 
 Updating the dgraph schema
 ------------
@@ -94,3 +94,94 @@ I created some scripts to do some sample queries so I could verify the data was 
 
 [all\_longitude\_latitude\_greater\_json.sh](query_scripts/all_longitude_latitude_greater_json.sh)
 (query when starting with the json data, if the node has a borough predicate and the longitude > -74 and the latitude > 40.9, outputs the descriptor, borough, latitude, and longitude)
+
+Sample Java Query App
+------------
+A small java app to Qeury the dgraph injected with the json data from above is here: [Query311.java](Query311Java/src/main/java/Query311.java)
+
+It uses the dgraph4j library: <https://github.com/dgraph-io/dgraph4j>
+
+The app does the same queries as the scripts all\_dates\_greater\_json.sh and all\_longitude\_latitude\_greater\_json.sh above.
+
+Requirements: Java 8, gradle, maven
+
+To Build and Run:
+>     cd Query311Java
+>     ./gradlew run
+
+Putting It All Together
+------------
+1.  Clone this repo
+>     git clone git@github.com:mzuber88/TwoSixDgraphDemo.git
+>     cd TwoSixDgraphDemo
+
+2.   If your docker containers aren't running start them up with: [docker-compose.yml](docker-compose.yml)
+>       docker-compose up -d
+
+3.  Delete any dgraph data you have in running dgraph containers and restart the containers. **Warning: This will delete all your dgraph data on running container instances** 
+>     ./data_conversion_scripts/delete_all_dgraph_data.sh
+>     ./data_conversion_scripts/shutdown_and_restart_dgraph.sh
+
+4.  Convert the included [fhrw-4uyv.json](data/fhrw-4uyv.json) into the format expected by dgraph.
+>     ./data_conversion_scripts/convert_311_json_to_dgraph_json.sh ./data/fhrw-4uyv.json
+
+5.   Inject the converted json into dgraph.
+>     ./data_conversion_scripts/insert_json_311_data_dgraph.sh ./data/fhrw-4uyv_dgraph.json
+
+6.   Update the dgraph schema with some types and indicies so we can query.
+>     ./data_conversion_scripts/alter_schema_json.sh
+
+7.   Build and run the Sample Java app that does two queries and prints the results:
+>     cd Query311Java
+>     ./gradlew run
+
+Program output:
+
+```
+> Task :run 
+Query nodes that have agency property and closed date > 2018, return predicates descriptor, borough, latitude, and longitude
+Raw Query:{me(func: has(agency)) @filter(ge(closed_date, "2018")) {descriptor borough latitude longitude}}
+Response:
+{
+  "me": [
+    {
+      "descriptor": "Failure To Retain Water/Improper Drainage- (LL103/89)",
+      "borough": "QUEENS",
+      "latitude": 40.710692,
+      "longitude": -73.830549
+    },
+    {
+      "descriptor": "Illegal. Commercial Use In Resident Zone",
+      "borough": "QUEENS",
+      "latitude": 40.738545,
+      "longitude": -73.830510
+    }
+  ]
+}
+
+Query nodes that have borough property and are located at a longitude > -74 and latitude > 40.9, return predicates descriptor, borough, latitude, and longitude
+Raw Query:{me(func: has(borough)) @filter(ge(longitude, -74) AND ge(latitude, 40.9) ) {descriptor borough latitude longitude}}
+Response:
+{
+  "me": [
+    {
+      "descriptor": "Noise: air condition/ventilation equipment (NV1)",
+      "borough": "BRONX",
+      "latitude": 40.902675,
+      "longitude": -73.851033
+    },
+    {
+      "descriptor": "Overnight Commercial Storage",
+      "borough": "BRONX",
+      "latitude": 40.900435,
+      "longitude": -73.840696
+    },
+    {
+      "descriptor": "HEAT",
+      "borough": "BRONX",
+      "latitude": 40.900576,
+      "longitude": -73.863022
+    }
+  ]
+}
+```
