@@ -1,0 +1,92 @@
+{
+  "set": [
+    {
+      "unique_key": "24445308",
+      "created_date": "2012-11-20T07:50:59.000",
+      "closed_date": "2012-11-20T15:19:09.000",
+      "agency": "NYPD",
+      "agency_name": "New York City Police Department",
+      "complaint_type": "Noise - Vehicle",
+      "descriptor": "Engine Idling",
+      "location_type": "Street/Sidewalk",
+      "incident_zip": "10075",
+      "incident_address": "980 MADISON AVENUE",
+      "street_name": "MADISON AVENUE",
+      "cross_street_1": "EAST 76 STREET",
+      "cross_street_2": "EAST 77 STREET",
+      "address_type": "ADDRESS",
+      "city": "NEW YORK",
+      "facility_type": "Precinct",
+      "status": "Closed",
+      "due_date": "2012-11-20T15:50:59.000",
+      "resolution_description": "The Police Department responded to the complaint and determined that police action was not necessary.",
+      "resolution_action_updated_date": "2012-11-20T15:19:09.000",
+      "community_board": "08 MANHATTAN",
+      "bbl": "1013910014",
+      "borough": "MANHATTAN",
+      "x_coordinate_state_plane": "994396",
+      "y_coordinate_state_plane": "221499",
+      "open_data_channel_type": "PHONE",
+      "park_facility_name": "Unspecified",
+      "park_borough": "MANHATTAN",
+      "latitude": "40.77463408345861",
+      "longitude": "-73.96336792724692",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          -73.963367927247,
+          40.774634083459
+        ]
+      },
+      ":computed_region_efsh_h5xi": "10092",
+      ":computed_region_f5dn_yrer": "23",
+      ":computed_region_yeji_bk3q": "4",
+      ":computed_region_92fq_4b7q": "51",
+      ":computed_region_sbqj_enih": "11"
+    },
+    {
+      "unique_key": "24445313",
+      "created_date": "2012-11-20T17:26:40.000",
+      "closed_date": "2012-12-04T11:58:42.000",
+      "agency": "DOT",
+      "agency_name": "Department of Transportation",
+      "complaint_type": "Sidewalk Condition",
+      "descriptor": "Metal Protruding - Sign Stump",
+      "location_type": "Sidewalk",
+      "incident_zip": "11208",
+      "incident_address": "2832 LINDEN BOULEVARD",
+      "street_name": "LINDEN BOULEVARD",
+      "cross_street_1": "RUBY STREET",
+      "cross_street_2": "EMERALD STREET",
+      "address_type": "ADDRESS",
+      "city": "BROOKLYN",
+      "facility_type": "N/A",
+      "status": "Closed",
+      "due_date": "2012-12-05T10:32:31.000",
+      "resolution_description": "The Department of Transportation has completed the request or corrected the condition.",
+      "resolution_action_updated_date": "2012-12-04T11:58:42.000",
+      "community_board": "05 BROOKLYN",
+      "bbl": "3044950001",
+      "borough": "BROOKLYN",
+      "x_coordinate_state_plane": "1023173",
+      "y_coordinate_state_plane": "183370",
+      "open_data_channel_type": "ONLINE",
+      "park_facility_name": "Unspecified",
+      "park_borough": "BROOKLYN",
+      "latitude": "40.66989947045144",
+      "longitude": "-73.85968935858304",
+      "location": {
+        "type": "Point",
+        "coordinates": [
+          -73.859689358583,
+          40.669899470451
+        ]
+      },
+      ":computed_region_efsh_h5xi": "17215",
+      ":computed_region_f5dn_yrer": "45",
+      ":computed_region_yeji_bk3q": "2",
+      ":computed_region_92fq_4b7q": "25",
+      ":computed_region_sbqj_enih": "47"
+    }
+  ]
+}
