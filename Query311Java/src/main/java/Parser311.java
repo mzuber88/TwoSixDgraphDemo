@@ -5,7 +5,6 @@ import com.google.gson.stream.JsonToken;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.HashMap;
 
 public class Parser311 {
@@ -83,7 +82,6 @@ public class Parser311 {
             jsonReader.endObject();
             JsonToken nextToken = jsonReader.peek();
             if(!JsonToken.END_DOCUMENT.equals(jsonReader.peek())) return false;
-            System.out.println(nextToken);
 
         } catch (Exception e) {
             return false;
@@ -106,9 +104,6 @@ public class Parser311 {
         JsonReader jsonReader = gson.newJsonReader(br);
 
         //dgraph root key must be set which is an array
-        if(!rootHasSetArray(jsonReader))
-            return false;
-
-        return true;
+        return rootHasSetArray(jsonReader);
     }
 }
