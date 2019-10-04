@@ -2,6 +2,7 @@ import org.junit.Test;
 
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -65,8 +66,8 @@ public class Parser311Test {
     @Test
     public void testPruneHashTable() {
         Parser311 parser311 = new Parser311("test_data/valid_dgraph.json");
-        HashMap<String, HashMap<String, Integer>> hm = null;
-        HashMap<String, HashMap<String, Integer>> pruned;
+        Map<String, Map<String, Integer>> hm = null;
+        Map<String, Map<String, Integer>> pruned;
         try {
             hm = parser311.generate311HashTable();
         }

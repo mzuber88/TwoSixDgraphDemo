@@ -17,7 +17,7 @@ public class Parser311 {
         this.pathTo311Json = pathTo311Json;
     }
 
-    private void process311Object(JsonReader jsonReader, HashMap<String, HashMap<String, Integer>> hmap) throws Exception
+    private void process311Object(JsonReader jsonReader, Map<String, Map<String, Integer>> hmap) throws Exception
     {
         jsonReader.beginObject();
 
@@ -25,7 +25,7 @@ public class Parser311 {
             String name = jsonReader.nextName();
 
             if (!hmap.containsKey(name)) {
-                HashMap<String, Integer> fieldMap = new HashMap<>();
+                Map<String, Integer> fieldMap = new HashMap<>();
                 if (JsonToken.STRING.equals(jsonReader.peek())) {
                     String value = jsonReader.nextString();
                     fieldMap.put(value, 1);
@@ -34,7 +34,7 @@ public class Parser311 {
                     jsonReader.skipValue();
                 }
             } else {
-                HashMap<String, Integer> fieldMap = hmap.get(name);
+                Map<String, Integer> fieldMap = hmap.get(name);
                 if (JsonToken.STRING.equals(jsonReader.peek())) {
                     String value = jsonReader.nextString();
                     if (fieldMap.containsKey(value)) {
@@ -53,11 +53,11 @@ public class Parser311 {
         jsonReader.endObject();
     }
 
-    public HashMap<String, HashMap<String, Integer>> generate311HashTable() throws Exception {
+    public Map<String, Map<String, Integer>> generate311HashTable() throws Exception {
         if(!isValid311DgraphJson())
             throw new Exception("Invalid Dgraph Json");
 
-        HashMap<String, HashMap<String, Integer>> hmap = new HashMap<>();
+        Map<String, Map<String, Integer>> hmap = new HashMap<>();
         Gson gson = new Gson();
         BufferedReader br;
         br = new BufferedReader(new FileReader(this.pathTo311Json));
@@ -111,13 +111,12 @@ public class Parser311 {
         return rootHasSetArray(jsonReader);
     }
 
-    public HashMap<String, HashMap<String, Integer>> pruneUniqueNodesFrom311HashMap(HashMap<String, HashMap<String, Integer>> hmap) {
-        HashMap<String, HashMap<String, Integer>> filtered = new HashMap<>();
+    public Map<String, Map<String, Integer>> pruneUniqueNodesFrom311HashMap(Map<String, Map<String, Integer>> hmap) {
+        Map<String, Map<String, Integer>> filtered = new HashMap<>();
         hmap.forEach((key, value) -> {
                     Map<String, Integer> pruned = value.entrySet().stream().filter(e -> e.getValue() > 1)
                             .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-
-                    if (pruned.size() > 0) filtered.put(key, (HashMap) pruned);
+                    if (pruned.size() > 0) filtered.put(key, pruned);
                 }
         );
         return filtered;
