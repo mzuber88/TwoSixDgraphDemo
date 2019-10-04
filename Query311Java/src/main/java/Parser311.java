@@ -1,3 +1,4 @@
+import com.google.common.collect.Maps;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
@@ -6,6 +7,9 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Parser311 {
     private String pathTo311Json;
@@ -105,5 +109,17 @@ public class Parser311 {
 
         //dgraph root key must be set which is an array
         return rootHasSetArray(jsonReader);
+    }
+
+    public HashMap<String, HashMap<String, Integer>> pruneUniqueNodesFrom311HashMap(HashMap<String, HashMap<String, Integer>> hmap) {
+        HashMap<String, HashMap<String, Integer>> filtered = new HashMap<>();
+        hmap.forEach((key, value) -> {
+                    Map<String, Integer> pruned = value.entrySet().stream().filter(e -> e.getValue() > 1)
+                            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+                    if (pruned.size() > 0) filtered.put(key, (HashMap) pruned);
+                }
+        );
+        return filtered;
     }
 }
