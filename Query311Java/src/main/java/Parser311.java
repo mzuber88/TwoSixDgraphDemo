@@ -31,14 +31,14 @@ public class Parser311 {
 
             if (edgeFilter.size() == 0 || edgeFilter.contains(key)) {
                 for (Map.Entry<String, Integer> nameEntry : entry.getValue().entrySet()) {
-                    writeJsonStringAsDgraphEdge(key,nameEntry.getKey(),writer);
+                    writeJsonStringAsUniqueDgraphNode(key,nameEntry.getKey(),writer);
 
                 }
             }
         }
     }
 
-    private static void writeJsonStringAsDgraphEdge(String key, String value, JsonWriter writer) throws IOException
+    private static void writeJsonStringAsUniqueDgraphNode(String key, String value, JsonWriter writer) throws IOException
     {
         writer.beginObject();
         writer.name("uid");
