@@ -8,4 +8,5 @@ bin/
 *.iml
 *.ipr
 *.iws
+.DS_Store
 out/

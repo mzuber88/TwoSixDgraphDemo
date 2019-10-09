@@ -1,9 +1,6 @@
 import org.junit.Test;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static org.junit.Assert.*;
@@ -66,6 +63,7 @@ public class Parser311Test {
     @Test
     public void testPruneHashTable() {
         Parser311 parser311 = new Parser311("test_data/valid_dgraph.json");
+        //Parser311 parser311 = new Parser311("../data/fhrw-4uyv_dgraph.json");
         Map<String, Map<String, Integer>> hm = null;
         Map<String, Map<String, Integer>> pruned;
         try {
@@ -89,6 +87,31 @@ public class Parser311Test {
                 .flatMap(e -> e.getValue().entrySet().stream())
                 .filter(f -> f.getValue() == 1).collect(Collectors.toSet());
         assertEquals(0, prunedSet.size());
+    }
+
+    @Test
+    public void insertEdgesUsingDuplicateMap() {
+        Parser311 parser311 = new Parser311("test_data/valid_dgraph_5.json");
+        Map<String, Map<String, Integer>> hm = null;
+        Map<String, Map<String, Integer>> pruned;
+        List<String> edgeFilter = new ArrayList<>(
+                Arrays.asList("borough",
+                        "agency"));
+
+        try {
+            hm = parser311.generate311HashTable();
+        }
+        catch (Exception e)
+        {
+            fail();
+        }
+
+        try {
+            parser311.insertEdgesUsingDuplicateMap(hm,edgeFilter);
+        }
+        catch (Exception e) {
+            fail();
+        }
 
 
     }
