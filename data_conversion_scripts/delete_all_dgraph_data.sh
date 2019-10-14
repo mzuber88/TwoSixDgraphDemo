@@ -1,4 +1,5 @@
 #!/bin/sh
 
 echo "Deleting all dgraph data!"
-docker exec -it test_dgraph_server_1 /bin/rm -rf p  w  zw
+container_id=`docker container ls | grep server | grep dgraph | cut -f1 -d ' '`
+docker exec -it $container_id /bin/rm -rf p  w  zw
